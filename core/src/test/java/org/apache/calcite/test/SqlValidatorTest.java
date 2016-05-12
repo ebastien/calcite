@@ -7027,6 +7027,17 @@ public class SqlValidatorTest extends SqlValidatorTestCase {
             + "FROM `DEPT`");
   }
 
+  @Test public void testRewriteWithLimit() {
+    SqlValidator validator = tester.getValidator();
+    validator.setIdentifierExpansion(false);
+    tester.checkRewrite(
+        validator,
+        "select name from dept limit 2",
+        "SELECT `NAME`\n"
+            + "FROM `DEPT`\n"
+            + "FETCH NEXT 2 ROWS ONLY");
+  }
+
   @Test public void testRewriteWithIdentifierExpansion() {
     SqlValidator validator = tester.getValidator();
     validator.setIdentifierExpansion(true);
